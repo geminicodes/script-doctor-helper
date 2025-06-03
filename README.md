@@ -1,73 +1,154 @@
-# Welcome to your Lovable project
 
-## Project info
+# QR Connect - URL to QR Code Generator
 
-**URL**: https://lovable.dev/projects/188b898b-5091-4c4a-a062-7dbc2ebd1db8
+A modern, mobile-first web application that converts URLs into downloadable QR codes and professional business cards.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+✅ **QR Code Generation**: Convert any URL into a high-quality QR code
+✅ **Business Card Mockup**: Preview QR codes on professional 3.5x2 inch cards
+✅ **Multiple Download Formats**: Download QR codes as PNG and cards as PNG/PDF
+✅ **Mobile-First Design**: Optimized for smartphone usage
+✅ **PWA Support**: Works as a Progressive Web App on Android and iOS
+✅ **Google Authentication**: Sign in with Google (ready for Supabase integration)
+✅ **Modern UI/UX**: Inspired by Glitch.com design with Webflow typography
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/188b898b-5091-4c4a-a062-7dbc2ebd1db8) and start prompting.
+- **Frontend**: React 18 + TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui components
+- **QR Generation**: qrcode.js library
+- **PDF Generation**: jsPDF + html2canvas
+- **Authentication**: Ready for Google Auth via Supabase
+- **Deployment**: Optimized for Vercel
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js 18+ 
+- npm, yarn, or pnpm
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Installation
 
-Follow these steps:
+1. Clone the repository
+```bash
+git clone <your-repo-url>
+cd qr-connect
+```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+2. Install dependencies
+```bash
+npm install
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Start the development server
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+4. Open [http://localhost:8080](http://localhost:8080) in your browser
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Deployment on Vercel
 
-**Use GitHub Codespaces**
+### Quick Deploy
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. Push your code to GitHub
+2. Connect your GitHub repo to Vercel
+3. Deploy with default settings
 
-## What technologies are used for this project?
+### Manual Deploy
 
-This project is built with:
+```bash
+# Build the project
+npm run build
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+# Deploy to Vercel
+npx vercel --prod
+```
 
-## How can I deploy this project?
+## Supabase Integration Setup
 
-Simply open [Lovable](https://lovable.dev/projects/188b898b-5091-4c4a-a062-7dbc2ebd1db8) and click on Share -> Publish.
+To enable backend functionality (authentication, URL saving, analytics):
 
-## Can I connect a custom domain to my Lovable project?
+1. Click the green "Supabase" button in the Lovable interface
+2. Connect your Supabase project
+3. The following features will be automatically configured:
+   - Google OAuth authentication
+   - URL storage in database
+   - User management
+   - Analytics tracking
 
-Yes, you can!
+### Database Schema (Auto-created with Supabase integration)
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```sql
+-- URLs table for saving generated QR codes
+create table public.urls (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users(id),
+  original_url text not null,
+  qr_code_url text,
+  card_downloaded boolean default false,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+-- Enable RLS
+alter table public.urls enable row level security;
+
+-- RLS policies
+create policy "Users can insert their own URLs" on public.urls
+  for insert with check (auth.uid() = user_id);
+
+create policy "Users can view their own URLs" on public.urls
+  for select using (auth.uid() = user_id);
+```
+
+## PWA Installation
+
+### Android
+1. Open the app in Chrome
+2. Tap the menu (⋮) button
+3. Select "Add to Home screen"
+4. Tap "Add"
+
+### iOS
+1. Open the app in Safari
+2. Tap the Share button
+3. Scroll down and tap "Add to Home Screen"
+4. Tap "Add"
+
+## Environment Variables
+
+When connected to Supabase, these will be automatically configured:
+
+```bash
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+## Features Roadmap
+
+- ✅ QR Code generation
+- ✅ Card mockup and download
+- ✅ PWA support
+- ✅ Mobile-first responsive design
+- 🔄 Google Authentication (ready for Supabase)
+- 🔄 URL saving to database
+- 🔄 Email capture integration
+- 🔄 PostHog analytics
+- 🔄 Mailchimp integration
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For support, email support@qrconnect.app or join our Discord community.
