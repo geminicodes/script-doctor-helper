@@ -6,20 +6,20 @@ import jsPDF from 'jspdf';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Download, QrCode, Link } from 'lucide-react';
+import { Download, QrCode, Save } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
-interface QRGeneratorProps {
-  userName?: string;
-  userEmail?: string;
-}
-
-const QRGenerator: React.FC<QRGeneratorProps> = ({ userName = "Your Name", userEmail }) => {
+const QRGenerator: React.FC = () => {
   const [url, setUrl] = useState('');
+  const [title, setTitle] = useState('');
   const [qrCodeUrl, setQrCodeUrl] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const generateQRCode = async () => {
     if (!url) {
@@ -58,11 +58,50 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({ userName = "Your Name", userE
     }
   };
 
+  const saveQRCode = async () => {
+    if (!user || !qrCodeUrl) {
+      toast({
+        title: "Sign in Required",
+        description: "Please sign in to save your QR code",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const { error } = await supabase
+        .from('qr_codes')
+        .insert({
+          user_id: user.id,
+          url: url,
+          title: title || 'Untitled QR Code',
+          qr_code_data: qrCodeUrl
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "QR Code Saved!",
+        description: "Your QR code has been saved to your account"
+      });
+    } catch (error) {
+      console.error('Error saving QR code:', error);
+      toast({
+        title: "Save Failed",
+        description: "Failed to save QR code. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const downloadQRCode = () => {
     if (!qrCodeUrl) return;
     
     const link = document.createElement('a');
-    link.download = 'qr-code.png';
+    link.download = `${title || 'qr-code'}.png`;
     link.href = qrCodeUrl;
     link.click();
   };
@@ -78,7 +117,7 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({ userName = "Your Name", userE
       
       // Download as PNG
       const link = document.createElement('a');
-      link.download = 'qr-card.png';
+      link.download = `${title || 'qr-card'}.png`;
       link.href = canvas.toDataURL();
       link.click();
 
@@ -91,7 +130,7 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({ userName = "Your Name", userE
       
       const imgData = canvas.toDataURL('image/png');
       pdf.addImage(imgData, 'PNG', 0, 0, 3.5, 2);
-      pdf.save('qr-card.pdf');
+      pdf.save(`${title || 'qr-card'}.pdf`);
 
       toast({
         title: "Card Downloaded!",
@@ -117,6 +156,13 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({ userName = "Your Name", userE
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          <Input
+            type="text"
+            placeholder="Title (optional)"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="h-12 text-lg"
+          />
           <div className="flex gap-2">
             <Input
               type="url"
@@ -137,10 +183,23 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({ userName = "Your Name", userE
           {qrCodeUrl && (
             <div className="flex flex-col items-center space-y-4">
               <img src={qrCodeUrl} alt="Generated QR Code" className="border rounded-lg" />
-              <Button onClick={downloadQRCode} variant="outline" className="flex items-center gap-2">
-                <Download className="w-4 h-4" />
-                Download QR Code
-              </Button>
+              <div className="flex gap-2 flex-wrap justify-center">
+                <Button onClick={downloadQRCode} variant="outline" className="flex items-center gap-2">
+                  <Download className="w-4 h-4" />
+                  Download QR Code
+                </Button>
+                {user && (
+                  <Button 
+                    onClick={saveQRCode} 
+                    disabled={isSaving}
+                    variant="outline" 
+                    className="flex items-center gap-2"
+                  >
+                    <Save className="w-4 h-4" />
+                    {isSaving ? 'Saving...' : 'Save to Account'}
+                  </Button>
+                )}
+              </div>
             </div>
           )}
         </CardContent>
@@ -161,9 +220,14 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({ userName = "Your Name", userE
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-lg font-bold text-gray-800">{userName}</h3>
-                    {userEmail && (
-                      <p className="text-sm text-gray-600">{userEmail}</p>
+                    <h3 className="text-lg font-bold text-gray-800">
+                      {user?.user_metadata?.full_name || 'Your Name'}
+                    </h3>
+                    {user?.email && (
+                      <p className="text-sm text-gray-600">{user.email}</p>
+                    )}
+                    {title && (
+                      <p className="text-xs text-gray-500 mt-1">{title}</p>
                     )}
                   </div>
                   <div className="text-xs text-gray-400">

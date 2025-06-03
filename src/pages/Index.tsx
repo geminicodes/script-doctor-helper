@@ -3,38 +3,30 @@ import React, { useState } from 'react';
 import Header from '@/components/Header';
 import LandingPage from '@/components/LandingPage';
 import QRGenerator from '@/components/QRGenerator';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Index = () => {
   const [showGenerator, setShowGenerator] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
+  const { user, loading } = useAuth();
 
   const handleGetStarted = () => {
     setShowGenerator(true);
   };
 
-  const handleAuthClick = () => {
-    // TODO: Implement Google Auth with Supabase
-    // For now, simulate authentication
-    if (!isAuthenticated) {
-      setIsAuthenticated(true);
-      setUserName('John Doe');
-      setUserEmail('john@example.com');
-    } else {
-      setIsAuthenticated(false);
-      setUserName('');
-      setUserEmail('');
-    }
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-green-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 animate-spin rounded-full border-4 border-gray-300 border-t-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-green-50">
-      <Header 
-        onAuthClick={handleAuthClick}
-        isAuthenticated={isAuthenticated}
-        userName={userName}
-      />
+      <Header />
       
       {!showGenerator ? (
         <LandingPage onGetStarted={handleGetStarted} />
@@ -50,10 +42,7 @@ const Index = () => {
               </p>
             </div>
             
-            <QRGenerator 
-              userName={userName || 'Your Name'}
-              userEmail={userEmail}
-            />
+            <QRGenerator />
             
             <div className="text-center mt-8">
               <button 
