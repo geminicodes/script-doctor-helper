@@ -115,13 +115,11 @@ const QRGenerator: React.FC = () => {
         backgroundColor: '#ffffff'
       });
       
-      // Download as PNG
       const link = document.createElement('a');
       link.download = `${title || 'qr-card'}.png`;
       link.href = canvas.toDataURL();
       link.click();
 
-      // Also create PDF version
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'in',
@@ -148,109 +146,118 @@ const QRGenerator: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* QR Generator Section */}
-      <Card className="border-2 border-gray-200 shadow-lg">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-2xl font-bold">
-            <QrCode className="w-6 h-6" />
+      <div className="bg-white border-4 border-black p-8 shadow-[12px_12px_0px_0px_#000000] transform -rotate-1">
+        <div className="mb-6">
+          <h2 className="flex items-center gap-3 text-4xl font-black text-black mb-2">
+            <div className="w-12 h-12 bg-blue-400 border-4 border-black flex items-center justify-center transform rotate-12">
+              <QrCode className="w-6 h-6 text-black" />
+            </div>
             Generate QR Code
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </h2>
+        </div>
+        <div className="space-y-6">
           <Input
             type="text"
             placeholder="Title (optional)"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="h-12 text-lg"
+            className="h-16 text-xl font-bold border-4 border-black shadow-[4px_4px_0px_0px_#000000] bg-yellow-200 placeholder:text-black/70"
           />
-          <div className="flex gap-2">
+          <div className="flex gap-4">
             <Input
               type="url"
               placeholder="Enter your LinkedIn, portfolio, or any URL..."
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="flex-1 h-12 text-lg"
+              className="flex-1 h-16 text-xl font-bold border-4 border-black shadow-[4px_4px_0px_0px_#000000] bg-green-200 placeholder:text-black/70"
             />
             <Button 
               onClick={generateQRCode} 
               disabled={isGenerating}
-              className="h-12 px-6"
+              className="h-16 px-8 text-xl font-black bg-pink-500 hover:bg-pink-400 border-4 border-black text-white shadow-[6px_6px_0px_0px_#000000] hover:shadow-[3px_3px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
             >
               {isGenerating ? 'Generating...' : 'Generate QR'}
             </Button>
           </div>
           
           {qrCodeUrl && (
-            <div className="flex flex-col items-center space-y-4">
-              <img src={qrCodeUrl} alt="Generated QR Code" className="border rounded-lg" />
-              <div className="flex gap-2 flex-wrap justify-center">
-                <Button onClick={downloadQRCode} variant="outline" className="flex items-center gap-2">
-                  <Download className="w-4 h-4" />
+            <div className="flex flex-col items-center space-y-6 bg-yellow-300 border-4 border-black p-6 shadow-[6px_6px_0px_0px_#000000]">
+              <div className="bg-white border-4 border-black p-4">
+                <img src={qrCodeUrl} alt="Generated QR Code" className="border-2 border-black" />
+              </div>
+              <div className="flex gap-4 flex-wrap justify-center">
+                <Button 
+                  onClick={downloadQRCode} 
+                  className="bg-blue-400 hover:bg-blue-300 border-4 border-black text-black font-black px-6 py-3 shadow-[4px_4px_0px_0px_#000000] hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
+                >
+                  <Download className="w-5 h-5 mr-2" />
                   Download QR Code
                 </Button>
                 {user && (
                   <Button 
                     onClick={saveQRCode} 
                     disabled={isSaving}
-                    variant="outline" 
-                    className="flex items-center gap-2"
+                    className="bg-green-400 hover:bg-green-300 border-4 border-black text-black font-black px-6 py-3 shadow-[4px_4px_0px_0px_#000000] hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
                   >
-                    <Save className="w-4 h-4" />
+                    <Save className="w-5 h-5 mr-2" />
                     {isSaving ? 'Saving...' : 'Save to Account'}
                   </Button>
                 )}
               </div>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Card Preview Section */}
       {qrCodeUrl && (
-        <Card className="border-2 border-gray-200 shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold">Card Preview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col items-center space-y-4">
-              <div 
-                ref={cardRef}
-                className="w-[350px] h-[200px] bg-white border-2 border-gray-300 rounded-lg p-4 flex flex-col justify-between shadow-lg"
-                style={{ aspectRatio: '3.5/2' }}
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-800">
-                      {user?.user_metadata?.full_name || 'Your Name'}
-                    </h3>
-                    {user?.email && (
-                      <p className="text-sm text-gray-600">{user.email}</p>
-                    )}
-                    {title && (
-                      <p className="text-xs text-gray-500 mt-1">{title}</p>
-                    )}
-                  </div>
-                  <div className="text-xs text-gray-400">
-                    Logo
-                  </div>
+        <div className="bg-white border-4 border-black p-8 shadow-[12px_12px_0px_0px_#000000] transform rotate-1">
+          <div className="mb-6">
+            <h2 className="text-4xl font-black text-black mb-4">Card Preview</h2>
+          </div>
+          <div className="flex flex-col items-center space-y-6">
+            <div 
+              ref={cardRef}
+              className="w-[350px] h-[200px] bg-pink-300 border-4 border-black p-4 flex flex-col justify-between shadow-[8px_8px_0px_0px_#000000] transform -rotate-2"
+              style={{ aspectRatio: '3.5/2' }}
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-2xl font-black text-black">
+                    {user?.user_metadata?.full_name || 'Your Name'}
+                  </h3>
+                  {user?.email && (
+                    <p className="text-lg font-bold text-black">{user.email}</p>
+                  )}
+                  {title && (
+                    <p className="text-sm font-bold text-black mt-1 bg-yellow-300 px-2 py-1 border-2 border-black inline-block">{title}</p>
+                  )}
                 </div>
-                
-                <div className="flex justify-center">
-                  <img src={qrCodeUrl} alt="QR Code" className="w-20 h-20" />
-                </div>
-                
-                <div className="text-center">
-                  <p className="text-xs text-gray-500">Scan to connect</p>
+                <div className="text-sm font-black text-black bg-green-400 px-2 py-1 border-2 border-black">
+                  LOGO
                 </div>
               </div>
               
-              <Button onClick={downloadCard} className="flex items-center gap-2">
-                <Download className="w-4 h-4" />
-                Download Card (PNG & PDF)
-              </Button>
+              <div className="flex justify-center">
+                <div className="bg-white border-2 border-black p-2">
+                  <img src={qrCodeUrl} alt="QR Code" className="w-16 h-16" />
+                </div>
+              </div>
+              
+              <div className="text-center">
+                <p className="text-sm font-black text-black bg-red-400 px-3 py-1 border-2 border-black inline-block">Scan to connect</p>
+              </div>
             </div>
-          </CardContent>
-        </Card>
+            
+            <Button 
+              onClick={downloadCard} 
+              className="bg-red-400 hover:bg-red-300 border-4 border-black text-black font-black text-xl px-8 py-4 shadow-[6px_6px_0px_0px_#000000] hover:shadow-[3px_3px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
+            >
+              <Download className="w-6 h-6 mr-3" />
+              Download Card (PNG & PDF)
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   );
