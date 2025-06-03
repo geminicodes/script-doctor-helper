@@ -75,6 +75,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
           </div>
         </div>
       </div>
+      <div className="text-center sm:text-left px-4 sm:pr-8 sm:pl-4 pb-4">
+        <p className="text-black text-sm sm:text-base md:text-lg font-bold">
+          Made in Madrid with love ❤️ by <a href="https://es.linkedin.com/in/valentin-mekhonoshina-073b02127" className="underline hover:no-underline">Valentin Mekhonoshina</a>
+        </p>
+      </div>
+
+      
+
+      
+        
     </div>
   );
 };

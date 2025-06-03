@@ -5,7 +5,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+//import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download, QrCode, Save } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -146,120 +146,91 @@ const QRGenerator: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* QR Generator Section */}
-      <div className="bg-white border-4 border-black p-8 shadow-[12px_12px_0px_0px_#000000] transform -rotate-1">
-        <div className="mb-6">
-          <h2 className="flex items-center gap-3 text-4xl font-black text-black mb-2">
-            <div className="w-12 h-12 bg-blue-400 border-4 border-black flex items-center justify-center transform rotate-12">
-              <QrCode className="w-6 h-6 text-black" />
+      <div className="bg-white border-2 sm:border-4 border-black p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_#000000] sm:shadow-[12px_12px_0px_0px_#000000] transform -rotate-1">
+        <div className="mb-4 sm:mb-6">
+          <h2 className="flex items-center gap-2 sm:gap-3 text-2xl sm:text-3xl md:text-4xl font-black text-black mb-2">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-blue-400 border-2 sm:border-4 border-black flex items-center justify-center transform rotate-12">
+              <QrCode className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black" />
             </div>
-            Generate QR Code
+            <span className="leading-tight">Generate QR Code</span>
           </h2>
         </div>
-        <div className="space-y-6">
-          <Input
-            type="text"
-            placeholder="Title (optional)"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="h-16 text-xl font-bold border-4 border-black shadow-[4px_4px_0px_0px_#000000] bg-yellow-200 placeholder:text-black/70"
-          />
-          <div className="flex gap-4">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Input
               type="url"
               placeholder="Enter your LinkedIn, portfolio, or any URL..."
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="flex-1 h-16 text-xl font-bold border-4 border-black shadow-[4px_4px_0px_0px_#000000] bg-green-200 placeholder:text-black/70"
+              className="flex-1 h-12 sm:h-14 md:h-16 text-base sm:text-lg md:text-xl font-bold border-2 sm:border-4 border-black shadow-[2px_2px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] bg-green-200 placeholder:text-black/70"
             />
             <Button 
               onClick={generateQRCode} 
               disabled={isGenerating}
-              className="h-16 px-8 text-xl font-black bg-pink-500 hover:bg-pink-400 border-4 border-black text-white shadow-[6px_6px_0px_0px_#000000] hover:shadow-[3px_3px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
+              className="h-12 sm:h-14 md:h-16 px-4 sm:px-6 md:px-8 text-base sm:text-lg md:text-xl font-black bg-pink-500 hover:bg-pink-400 border-2 sm:border-4 border-black text-white shadow-[3px_3px_0px_0px_#000000] sm:shadow-[6px_6px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[3px_3px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
             >
-              {isGenerating ? 'Generating...' : 'Generate QR'}
+              <span className="hidden sm:inline">{isGenerating ? 'Generating...' : 'Generate QR'}</span>
+              <span className="sm:hidden">{isGenerating ? 'Gen...' : 'Generate'}</span>
             </Button>
           </div>
           
           {qrCodeUrl && (
-            <div className="flex flex-col items-center space-y-6 bg-yellow-300 border-4 border-black p-6 shadow-[6px_6px_0px_0px_#000000]">
-              <div className="bg-white border-4 border-black p-4">
-                <img src={qrCodeUrl} alt="Generated QR Code" className="border-2 border-black" />
+            <div className="flex flex-col items-center space-y-4 sm:space-y-6 bg-yellow-300 border-2 sm:border-4 border-black p-4 sm:p-6 shadow-[3px_3px_0px_0px_#000000] sm:shadow-[6px_6px_0px_0px_#000000]">
+              
+              <div className="text-center">
+                <p className="bg-yellow-400 hover:bg-yellow-300 border-2 sm:border-4 border-black text-black font-black px-4 sm:px-6 py-2 sm:py-3 shadow-[2px_2px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150 text-sm sm:text-base">Scan to connect</p>
               </div>
-              <div className="flex gap-4 flex-wrap justify-center">
+              
+              <div className="bg-white border-2 sm:border-4 border-black p-2 sm:p-4">
+                <img src={qrCodeUrl} alt="Generated QR Code" className="border-2 border-black w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80" />
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
                 <Button 
                   onClick={downloadQRCode} 
-                  className="bg-blue-400 hover:bg-blue-300 border-4 border-black text-black font-black px-6 py-3 shadow-[4px_4px_0px_0px_#000000] hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
+                  className="bg-blue-400 hover:bg-blue-300 border-2 sm:border-4 border-black text-black font-black px-4 sm:px-6 py-2 sm:py-3 shadow-[2px_2px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150 text-sm sm:text-base"
                 >
-                  <Download className="w-5 h-5 mr-2" />
-                  Download QR Code
+                  <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                  <span className="hidden sm:inline">Download QR Code</span>
+                  <span className="sm:hidden">Download QR</span>
+                </Button>
+
+                <Button 
+                  onClick={downloadCard} 
+                  className="bg-red-400 hover:bg-red-300 border-2 sm:border-4 border-black text-black font-black text-sm sm:text-base md:text-xl px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 shadow-[2px_2px_0px_0px_#000000] sm:shadow-[6px_6px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[3px_3px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
+                >
+                  <Download className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mr-2 sm:mr-3" />
+                  <span className="hidden sm:inline">Download Card (PNG & PDF)</span>
+                  <span className="sm:hidden">Download Card</span>
                 </Button>
                 {user && (
                   <Button 
                     onClick={saveQRCode} 
                     disabled={isSaving}
-                    className="bg-green-400 hover:bg-green-300 border-4 border-black text-black font-black px-6 py-3 shadow-[4px_4px_0px_0px_#000000] hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
+                    className="bg-green-400 hover:bg-green-300 border-2 sm:border-4 border-black text-black font-black px-4 sm:px-6 py-2 sm:py-3 shadow-[2px_2px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150 text-sm sm:text-base"
                   >
-                    <Save className="w-5 h-5 mr-2" />
-                    {isSaving ? 'Saving...' : 'Save to Account'}
+                    <Save className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                    <span className="hidden sm:inline">{isSaving ? 'Saving...' : 'Save to Account'}</span>
+                    <span className="sm:hidden">{isSaving ? 'Save...' : 'Save'}</span>
                   </Button>
                 )}
+                
+              </div>
+              <div className="text-center sm:text-left px-4 sm:pr-8 sm:pl-4 pb-4">
+                <p className="text-black text-sm sm:text-base md:text-lg font-bold">
+                  Made in Madrid with love ❤️ by <a href="https://es.linkedin.com/in/valentin-mekhonoshina-073b02127" className="underline hover:no-underline">Valentin Mekhonoshina</a>
+                </p>
               </div>
             </div>
+      
           )}
         </div>
+        
       </div>
-
+      
       {/* Card Preview Section */}
-      {qrCodeUrl && (
-        <div className="bg-white border-4 border-black p-8 shadow-[12px_12px_0px_0px_#000000] transform rotate-1">
-          <div className="mb-6">
-            <h2 className="text-4xl font-black text-black mb-4">Card Preview</h2>
-          </div>
-          <div className="flex flex-col items-center space-y-6">
-            <div 
-              ref={cardRef}
-              className="w-[350px] h-[200px] bg-pink-300 border-4 border-black p-4 flex flex-col justify-between shadow-[8px_8px_0px_0px_#000000] transform -rotate-2"
-              style={{ aspectRatio: '3.5/2' }}
-            >
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="text-2xl font-black text-black">
-                    {user?.user_metadata?.full_name || 'Your Name'}
-                  </h3>
-                  {user?.email && (
-                    <p className="text-lg font-bold text-black">{user.email}</p>
-                  )}
-                  {title && (
-                    <p className="text-sm font-bold text-black mt-1 bg-yellow-300 px-2 py-1 border-2 border-black inline-block">{title}</p>
-                  )}
-                </div>
-                <div className="text-sm font-black text-black bg-green-400 px-2 py-1 border-2 border-black">
-                  LOGO
-                </div>
-              </div>
-              
-              <div className="flex justify-center">
-                <div className="bg-white border-2 border-black p-2">
-                  <img src={qrCodeUrl} alt="QR Code" className="w-16 h-16" />
-                </div>
-              </div>
-              
-              <div className="text-center">
-                <p className="text-sm font-black text-black bg-red-400 px-3 py-1 border-2 border-black inline-block">Scan to connect</p>
-              </div>
-            </div>
-            
-            <Button 
-              onClick={downloadCard} 
-              className="bg-red-400 hover:bg-red-300 border-4 border-black text-black font-black text-xl px-8 py-4 shadow-[6px_6px_0px_0px_#000000] hover:shadow-[3px_3px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
-            >
-              <Download className="w-6 h-6 mr-3" />
-              Download Card (PNG & PDF)
-            </Button>
-          </div>
-        </div>
-      )}
+      
     </div>
+    
   );
 };
 
