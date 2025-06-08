@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { QrCode, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
@@ -14,8 +14,7 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center transform rotate-3">
-              <img src="/icon.png" className="w-full h-full object-contain" />
-              <QrCode className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+              <img src="/icon.png" alt="QR Connect Logo" className="w-full h-full object-contain" />
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-black transform -rotate-1">snapqr</h1>
           </div>
