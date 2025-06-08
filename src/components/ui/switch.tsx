@@ -18,9 +18,11 @@ const Switch = React.forwardRef<
   >
     <SwitchPrimitives.Thumb
       className={cn(
-        "pointer-events-none block h-4 w-4 rounded-lg bg-white dark:bg-gray-100 border-2 border-black dark:border-gray-600 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
+        "pointer-events-none block h-4 w-4 rounded-lg bg-white dark:bg-gray-100 border-2 border-black dark:border-gray-600 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0 flex items-center justify-center text-xs"
       )}
-    />
+    >
+      {props.checked ? '🌙' : '☀️'}
+    </SwitchPrimitives.Thumb>
   </SwitchPrimitives.Root>
 ))
 Switch.displayName = SwitchPrimitives.Root.displayName
