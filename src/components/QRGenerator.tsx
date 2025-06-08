@@ -5,7 +5,6 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-//import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download, QrCode, Save } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -146,10 +145,10 @@ const QRGenerator: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* QR Generator Section */}
-      <div className="bg-white border-2 sm:border-4 border-black p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_#000000] sm:shadow-[12px_12px_0px_0px_#000000] transform -rotate-1">
+      <div className="bg-white border-2 sm:border-4 border-black p-4 sm:p-6 md:p-8 rounded-lg shadow-[6px_6px_0px_0px_#000000] sm:shadow-[12px_12px_0px_0px_#000000] transform -rotate-1">
         <div className="mb-4 sm:mb-6">
           <h2 className="flex items-center gap-2 sm:gap-3 text-2xl sm:text-3xl md:text-4xl font-black text-black mb-2">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-blue-400 border-2 sm:border-4 border-black flex items-center justify-center transform rotate-12">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-yellow-400 border-2 sm:border-4 border-black flex items-center justify-center transform rotate-12 rounded-lg">
               <QrCode className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black" />
             </div>
             <span className="leading-tight">Generate QR Code</span>
@@ -162,12 +161,12 @@ const QRGenerator: React.FC = () => {
               placeholder="Enter your LinkedIn, portfolio, or any URL..."
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="flex-1 h-12 sm:h-14 md:h-16 text-base sm:text-lg md:text-xl font-bold border-2 sm:border-4 border-black shadow-[2px_2px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] bg-green-200 placeholder:text-black/70"
+              className="flex-1 h-12 sm:h-14 md:h-16 text-base sm:text-lg md:text-xl font-bold border-2 sm:border-4 border-black shadow-[2px_2px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] bg-white placeholder:text-black/70 rounded-lg"
             />
             <Button 
               onClick={generateQRCode} 
               disabled={isGenerating}
-              className="h-12 sm:h-14 md:h-16 px-4 sm:px-6 md:px-8 text-base sm:text-lg md:text-xl font-black bg-pink-500 hover:bg-pink-400 border-2 sm:border-4 border-black text-white shadow-[3px_3px_0px_0px_#000000] sm:shadow-[6px_6px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[3px_3px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
+              className="h-12 sm:h-14 md:h-16 px-4 sm:px-6 md:px-8 text-base sm:text-lg md:text-xl font-black bg-yellow-400 hover:bg-yellow-300 border-2 sm:border-4 border-black text-black rounded-lg shadow-[3px_3px_0px_0px_#000000] sm:shadow-[6px_6px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[3px_3px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
             >
               <span className="hidden sm:inline">{isGenerating ? 'Generating...' : 'Generate QR'}</span>
               <span className="sm:hidden">{isGenerating ? 'Gen...' : 'Generate'}</span>
@@ -175,19 +174,19 @@ const QRGenerator: React.FC = () => {
           </div>
           
           {qrCodeUrl && (
-            <div className="flex flex-col items-center space-y-4 sm:space-y-6 bg-yellow-300 border-2 sm:border-4 border-black p-4 sm:p-6 shadow-[3px_3px_0px_0px_#000000] sm:shadow-[6px_6px_0px_0px_#000000]">
+            <div className="flex flex-col items-center space-y-4 sm:space-y-6 bg-yellow-400 border-2 sm:border-4 border-black p-4 sm:p-6 rounded-lg shadow-[3px_3px_0px_0px_#000000] sm:shadow-[6px_6px_0px_0px_#000000]">
               
               <div className="text-center">
-                <p className="bg-yellow-400 hover:bg-yellow-300 border-2 sm:border-4 border-black text-black font-black px-4 sm:px-6 py-2 sm:py-3 shadow-[2px_2px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150 text-sm sm:text-base">Scan to connect</p>
+                <p className="bg-white hover:bg-gray-100 border-2 sm:border-4 border-black text-black font-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-[2px_2px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150 text-sm sm:text-base">Scan to connect</p>
               </div>
               
-              <div className="bg-white border-2 sm:border-4 border-black p-2 sm:p-4">
-                <img src={qrCodeUrl} alt="Generated QR Code" className="border-2 border-black w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80" />
+              <div className="bg-white border-2 sm:border-4 border-black p-2 sm:p-4 rounded-lg">
+                <img src={qrCodeUrl} alt="Generated QR Code" className="border-2 border-black w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-lg" />
               </div>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
                 <Button 
                   onClick={downloadQRCode} 
-                  className="bg-blue-400 hover:bg-blue-300 border-2 sm:border-4 border-black text-black font-black px-4 sm:px-6 py-2 sm:py-3 shadow-[2px_2px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150 text-sm sm:text-base"
+                  className="bg-yellow-400 hover:bg-yellow-300 border-2 sm:border-4 border-black text-black font-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-[2px_2px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150 text-sm sm:text-base"
                 >
                   <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   <span className="hidden sm:inline">Download QR Code</span>
@@ -196,7 +195,7 @@ const QRGenerator: React.FC = () => {
 
                 <Button 
                   onClick={downloadCard} 
-                  className="bg-red-400 hover:bg-red-300 border-2 sm:border-4 border-black text-black font-black text-sm sm:text-base md:text-xl px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 shadow-[2px_2px_0px_0px_#000000] sm:shadow-[6px_6px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[3px_3px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
+                  className="bg-yellow-400 hover:bg-yellow-300 border-2 sm:border-4 border-black text-black font-black text-sm sm:text-base md:text-xl px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 rounded-lg shadow-[2px_2px_0px_0px_#000000] sm:shadow-[6px_6px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[3px_3px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150"
                 >
                   <Download className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mr-2 sm:mr-3" />
                   <span className="hidden sm:inline">Download Card (PNG & PDF)</span>
@@ -206,7 +205,7 @@ const QRGenerator: React.FC = () => {
                   <Button 
                     onClick={saveQRCode} 
                     disabled={isSaving}
-                    className="bg-green-400 hover:bg-green-300 border-2 sm:border-4 border-black text-black font-black px-4 sm:px-6 py-2 sm:py-3 shadow-[2px_2px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150 text-sm sm:text-base"
+                    className="bg-yellow-400 hover:bg-yellow-300 border-2 sm:border-4 border-black text-black font-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-[2px_2px_0px_0px_#000000] sm:shadow-[4px_4px_0px_0px_#000000] hover:shadow-[1px_1px_0px_0px_#000000] sm:hover:shadow-[2px_2px_0px_0px_#000000] transform hover:translate-x-1 hover:translate-y-1 transition-all duration-150 text-sm sm:text-base"
                   >
                     <Save className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                     <span className="hidden sm:inline">{isSaving ? 'Saving...' : 'Save to Account'}</span>
