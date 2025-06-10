@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +10,7 @@ import CreateQRPage from "./pages/CreateQRPage";
 import MyQRPage from "./pages/MyQRPage";
 import SettingsPage from "./pages/SettingsPage";
 import ItemListPage from "./pages/ItemListPage";
+import ViewPage from "./pages/ViewPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +30,7 @@ const App = () => {
                 <Route path="/my-qr" element={<MyQRPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="/item-list" element={<ItemListPage />} />
+                <Route path="/view" element={<ViewPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
