@@ -1,10 +1,16 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Trash2, RotateCcw, Edit, Save } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Trash2, RotateCcw, Save, Edit } from 'lucide-react';
 import Header from '@/components/Header';
 
 const MyQRPage = () => {
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [isEditingInfo, setIsEditingInfo] = useState(false);
+  const [title, setTitle] = useState('Sample Name/Title');
+  const [info, setInfo] = useState('Sample Info Text');
+
   const handleDelete = () => {
     console.log('Delete clicked');
     // TODO: Implement delete logic
@@ -15,14 +21,22 @@ const MyQRPage = () => {
     // TODO: Implement refresh QR logic
   };
 
-  const handleEdit = () => {
-    console.log('Edit clicked');
-    // TODO: Implement edit logic
-  };
-
   const handleSave = () => {
     console.log('Save clicked');
     // TODO: Implement save logic
+  };
+
+  const handlePhotoEdit = () => {
+    console.log('Photo edit clicked');
+    // TODO: Implement photo upload logic
+  };
+
+  const handleTitleEdit = () => {
+    setIsEditingTitle(!isEditingTitle);
+  };
+
+  const handleInfoEdit = () => {
+    setIsEditingInfo(!isEditingInfo);
   };
 
   return (
@@ -43,26 +57,73 @@ const MyQRPage = () => {
           <div className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-lg space-y-6">
             {/* Photo Section */}
             <div className="text-center">
-              <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center overflow-hidden">
-                <div className="text-gray-400 dark:text-gray-500 text-4xl">
-                  👤
+              <div className="relative inline-block">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center overflow-hidden">
+                  <div className="text-gray-400 dark:text-gray-500 text-2xl">
+                    👤
+                  </div>
                 </div>
+                <Button
+                  onClick={handlePhotoEdit}
+                  className="absolute -top-1 -right-1 w-6 h-6 sm:w-8 sm:h-8 p-0 bg-white dark:bg-gray-800 border-2 border-black dark:border-white rounded-full shadow-none hover:shadow-none transform-none hover:transform-none"
+                >
+                  <Edit className="w-3 h-3 sm:w-4 sm:h-4 text-black dark:text-white" />
+                </Button>
               </div>
             </div>
 
             {/* Text Lines */}
             <div className="text-center space-y-2">
-              <h2 className="text-xl sm:text-2xl font-black text-black dark:text-white">
-                Sample Name/Title
-              </h2>
-              <h3 className="text-base sm:text-lg font-bold text-gray-600 dark:text-gray-300">
-                Sample Info Text
-              </h3>
+              <div className="flex items-center justify-center gap-2">
+                {isEditingTitle ? (
+                  <Input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    onBlur={() => setIsEditingTitle(false)}
+                    onKeyDown={(e) => e.key === 'Enter' && setIsEditingTitle(false)}
+                    className="text-center text-xl sm:text-2xl font-black max-w-xs"
+                    autoFocus
+                  />
+                ) : (
+                  <h2 className="text-xl sm:text-2xl font-black text-black dark:text-white">
+                    {title}
+                  </h2>
+                )}
+                <Button
+                  onClick={handleTitleEdit}
+                  className="w-6 h-6 p-0 bg-white dark:bg-gray-800 border-2 border-black dark:border-white rounded shadow-none hover:shadow-none transform-none hover:transform-none"
+                >
+                  <Edit className="w-3 h-3 text-black dark:text-white" />
+                </Button>
+              </div>
+              
+              <div className="flex items-center justify-center gap-2">
+                {isEditingInfo ? (
+                  <Input
+                    value={info}
+                    onChange={(e) => setInfo(e.target.value)}
+                    onBlur={() => setIsEditingInfo(false)}
+                    onKeyDown={(e) => e.key === 'Enter' && setIsEditingInfo(false)}
+                    className="text-center text-base sm:text-lg font-bold max-w-xs"
+                    autoFocus
+                  />
+                ) : (
+                  <h3 className="text-base sm:text-lg font-bold text-gray-600 dark:text-gray-300">
+                    {info}
+                  </h3>
+                )}
+                <Button
+                  onClick={handleInfoEdit}
+                  className="w-6 h-6 p-0 bg-white dark:bg-gray-800 border-2 border-black dark:border-white rounded shadow-none hover:shadow-none transform-none hover:transform-none"
+                >
+                  <Edit className="w-3 h-3 text-black dark:text-white" />
+                </Button>
+              </div>
             </div>
 
-            {/* QR Code Space */}
+            {/* QR Code Space - 25% larger */}
             <div className="flex justify-center">
-              <div className="w-48 h-48 sm:w-56 sm:h-56 bg-white dark:bg-gray-100 border-4 border-black dark:border-gray-600 rounded-lg flex items-center justify-center">
+              <div className="w-60 h-60 sm:w-70 sm:h-70 bg-white dark:bg-gray-100 border-4 border-black dark:border-gray-600 rounded-lg flex items-center justify-center">
                 <div className="text-gray-400 dark:text-gray-500 text-center">
                   <div className="text-4xl mb-2">⬜</div>
                   <p className="text-sm font-bold">QR Code</p>
@@ -87,28 +148,17 @@ const MyQRPage = () => {
                 className="flex-1 bg-blue-400 hover:bg-blue-300 dark:bg-blue-500 dark:hover:bg-blue-400 text-black dark:text-white font-black text-xs sm:text-sm"
               >
                 <RotateCcw className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                <span className="hidden sm:inline">Refresh</span>
-                <span className="sm:hidden">Ref</span>
+                <span className="hidden sm:inline">Refresh QR</span>
+                <span className="sm:hidden">Ref QR</span>
               </Button>
               
               <Button
-                onClick={handleEdit}
-                className="flex-1 bg-purple-400 hover:bg-purple-300 dark:bg-purple-500 dark:hover:bg-purple-400 text-black dark:text-white font-black text-xs sm:text-sm"
-              >
-                <Edit className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                <span className="hidden sm:inline">Edit</span>
-                <span className="sm:hidden">Ed</span>
-              </Button>
-            </div>
-
-            {/* Save Button - Bottom Row */}
-            <div className="pt-2">
-              <Button
                 onClick={handleSave}
-                className="w-full bg-green-400 hover:bg-green-300 dark:bg-green-500 dark:hover:bg-green-400 text-black dark:text-white font-black text-sm sm:text-base"
+                className="flex-1 bg-green-400 hover:bg-green-300 dark:bg-green-500 dark:hover:bg-green-400 text-black dark:text-white font-black text-xs sm:text-sm"
               >
-                <Save className="w-4 h-4 mr-2" />
-                Save QR Code
+                <Save className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="hidden sm:inline">Save</span>
+                <span className="sm:hidden">Sav</span>
               </Button>
             </div>
           </div>
