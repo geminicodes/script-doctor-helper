@@ -1,9 +1,11 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import LandingPage from '@/components/LandingPage';
 import QRGenerator from '@/components/QRGenerator';
 import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const [showGenerator, setShowGenerator] = useState(false);
@@ -29,7 +31,16 @@ const Index = () => {
       <Header />
       
       {!showGenerator ? (
-        <LandingPage onGetStarted={handleGetStarted} />
+        <>
+          <LandingPage onGetStarted={handleGetStarted} />
+          <div className="text-center pb-8">
+            <Link to="/create">
+              <Button className="bg-yellow-400 hover:bg-yellow-300 dark:bg-yellow-500 dark:hover:bg-yellow-400 text-black dark:text-gray-900 font-black text-lg sm:text-xl px-6 sm:px-8 py-3 sm:py-4 rounded-lg">
+                Create Custom QR
+              </Button>
+            </Link>
+          </div>
+        </>
       ) : (
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
