@@ -116,17 +116,16 @@ const CreateQRPage = () => {
                 variant="destructive"
                 className="flex-1 max-w-[33%] bg-red-400 hover:bg-red-300 dark:bg-red-500 dark:hover:bg-red-400 text-black dark:text-white font-black text-sm sm:text-base"
               >
-                <Trash2 className="w-4 h-4 mr-1 sm:mr-2" />
+                <Trash2 className="w-4 h-4 sm:mr-2" />
                 <span className="hidden sm:inline">Delete</span>
-                <span className="sm:hidden">Del</span>
               </Button>
               
               <Button
                 onClick={handleGenerateQR}
                 className="flex-1 bg-green-400 hover:bg-green-300 dark:bg-green-500 dark:hover:bg-green-400 text-black dark:text-white font-black text-sm sm:text-base"
               >
+                <span className="sm:hidden">Generate QR!</span>
                 <span className="hidden sm:inline">Generate QR!</span>
-                <span className="sm:hidden">Gen QR!</span>
               </Button>
             </div>
           </div>
